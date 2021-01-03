@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="hack.neobean"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Source and patched manifests are merged according to standard build rules:
+        http://tools.android.com/tech-docs/new-build-system/user-guide/manifest-merger -->
+
+    <!--We let the application tag inherit its attributes from the source app.-->
+    <application>
+    </application>
+
+    <!-- unsure if this permission is necessary. It is mentioned in the error which sometimes occurs when the apps are newly installed -->
+    <uses-permission android:name="com.samsung.android.hostmanager.permission.WRITE_APP_REGISTRY"></uses-permission>
+</manifest>
