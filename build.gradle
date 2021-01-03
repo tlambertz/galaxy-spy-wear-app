@@ -1,0 +1,39 @@
+task build {
+    // For each included build run ':app:assembleDebug'
+    gradle.includedBuilds.each { build ->
+        dependsOn build.task(':app:assembleDebug')
+    }
+}
+
+task release {
+    // For each included build run ':app:build'
+    gradle.includedBuilds.each { build ->
+        dependsOn build.task(':app:build')
+    }
+}
+
+task install {
+    // For each included build run ':app:installDebug'
+    gradle.includedBuilds.each { build ->
+        dependsOn build.task(':app:installDebug')
+    }
+}
+
+task installRelease {
+    // For each included build run ':app:installRelease'
+    gradle.includedBuilds.each { build ->
+        dependsOn build.task(':app:installRelease')
+    }
+}
+
+task clean {
+    // For each included build run 'clean' on each project.
+    gradle.includedBuilds.each { build ->
+        dependsOn build.task(':clean')
+        build.projectDir.eachDir { dir ->
+            if (new File(dir, 'build.gradle').isFile()) {
+                dependsOn build.task(":${dir.name}:clean")
+            }
+        }
+    }
+}
