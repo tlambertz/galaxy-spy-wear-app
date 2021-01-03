@@ -135,40 +135,46 @@ dexpatcherConfig {
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 29 // THIS IS IMPORTANT! set to targetSdkVersion
     //buildToolsVersion '28.0.3'
 
     defaultConfig {
         // The 'package' attribute in the patched app manifest must be different from the
         // source app ID to support class generation (R and BuildConfig), but here you can
         // override the exported patched app ID to match the source.
-        applicationId 'makeinfo.com.getid'
+        applicationId 'com.samsung.android.app.watchmanager'
 
         // You must set these fields to match or be compatible with the corresponding data
         // of the source app. (Data is displayed when the source apk library is built.)
-        minSdkVersion 9
-        targetSdkVersion 21
-        versionCode 1
-        versionName '1.0'
+        minSdkVersion 18
+        targetSdkVersion 29
+        versionCode 2120113061
+        versionName '2.2.36.20113061' // all taken from androidmanifest of original app
     }
 
     lintOptions {
         disableLintTasks true
         //checkReleaseBuilds false
     }
-}
+    
+    // https://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
 
-dependencies {
-    // We import an Android library, a file chooser, just for fun. This pulls in all its
-    // resources that will be transparently merged, like other resources from this project,
-    // with those of the source app. Each component will have its own independent 'R' class.
-    // The numeric IDs of the resources coming from the source app will be kept constant.
-    implementation('ru.bartwell:exfilepicker:1.8') {
-        // But the imported library has a transitive dependency on a module that is already
-        // present in the source app. So we exclude it from the import, keeping the source
-        // app's version. Alternatively we could delete the copy brought in by the source
-        // app using DexPatcher package annotations.
-        exclude module: 'support-v4'
+            // Optional, specify signing versions used
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
